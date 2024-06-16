@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('node:path');
 
 const createWindow = () => {
@@ -10,12 +10,15 @@ const createWindow = () => {
         }
     });
 
+    ipcMain.on('set-title', (event, title) => {
+        const webContents = event.sender;
+        const win = BrowserWindow.fromWebContents(webContents);
+
+        win.setTitle(title);
+    });
+
     win.loadFile('index.html');
 };
-
-app.whenReady().then(() => {
-    createWindow();
-});
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
