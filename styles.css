@@ -1,0 +1,38 @@
+body {
+    margin: 0;
+}
+
+header {
+    background: #3C3F41;
+    color: #D2DEDC;
+    width: 100%;
+    min-height: 5vh;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    min-height: 70vh;
+}
+
+.pane {
+    padding: 20px;
+    border: 1px solid #1E1F22;
+}
+
+.pane-dark {
+    background-color: #1E1F22;
+    color: #7997AE;
+}
+
+.pane-light {
+    background-color: #2B2D30;
+}
+
+.pane-bottom {
+    background: #3C3F41;
+    color: #D2DEDC;
+    width: 100%;
+    min-height: 25vh;
+}
+
