@@ -1,0 +1,19 @@
+{
+  "name": "sorceress",
+  "version": "1.0.0",
+  "description": "Editor for the Cauldron programming language",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/cauldron-lang/sorceress"
+  },
+  "author": "Dennis Heckman",
+  "license": "GPL-3.0-or-later",
+  "devDependencies": {
+    "electron": "^31.0.1"
+  }
+}
