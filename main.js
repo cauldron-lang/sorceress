@@ -1,5 +1,22 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu } = require('electron');
 const path = require('node:path');
+
+const createMenu = (mainWindow) => Menu.buildFromTemplate([
+    {
+        label: app.name,
+        submenu: [
+            {
+                click: () => mainWindow.webContents.send('update-counter', 1),
+                label: 'Increment'
+            },
+            {
+                click: () => mainWindow.webContents.send('update-counter', -1),
+                label: 'Decrement'
+            }
+        ]
+    }
+
+]);
 
 const createWindow = () => {
     const win = new BrowserWindow({
@@ -9,7 +26,9 @@ const createWindow = () => {
             preload: path.join(__dirname, 'preload.js')
         }
     });
+    const menu = createMenu(win);
 
+    Menu.setApplicationMenu(menu);
     ipcMain.on('set-title', (event, title) => {
         const webContents = event.sender;
         const win = BrowserWindow.fromWebContents(webContents);
@@ -18,6 +37,7 @@ const createWindow = () => {
     });
 
     win.loadFile('index.html');
+    win.webContents.openDevTools()
 };
 
 app.on('window-all-closed', () => {
@@ -27,6 +47,10 @@ app.on('window-all-closed', () => {
 });
 
 app.whenReady().then(() => {
+    ipcMain.on('counter-value', (_event, value) => {
+        console.log(value); // will print value to Node console
+    });
+
     createWindow();
 
     app.on('activate', () => {
