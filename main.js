@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain, Menu } = require('electron');
 const path = require('node:path');
 const { createDispatch } = require('./dispatcher');
-const { UPDATE_COUNT } = require('./event');
+const { UPDATE_COUNT, BOOT } = require('./event');
 
 const createMenu = (mainWindow, dispatch) => Menu.buildFromTemplate([
     {
@@ -22,8 +22,8 @@ const createMenu = (mainWindow, dispatch) => Menu.buildFromTemplate([
 
 const createWindow = () => {
     const win = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 1024,
+        height: 768,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js')
         }
@@ -39,8 +39,12 @@ const createWindow = () => {
         win.setTitle(title);
     });
 
+    ipcMain.on('rendererReady', (_event) => {
+        dispatch(BOOT());
+    });
+
     win.loadFile('index.html');
-    win.webContents.openDevTools()
+    win.webContents.openDevTools();
 };
 
 app.on('window-all-closed', () => {

@@ -7,8 +7,15 @@ const updateCount = (event, present) => {
     present(proposal);
 };
 
+const boot = (event, present) => {
+    const proposal = { boot: true };
+
+    present(proposal);
+};
+
 const intent = {
     UPDATE_COUNT: updateCount,
+    BOOT: boot
 };
 
 const act = (event, present) => {
