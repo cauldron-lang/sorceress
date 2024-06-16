@@ -1,16 +1,18 @@
 const { app, BrowserWindow, ipcMain, Menu } = require('electron');
 const path = require('node:path');
+const { createDispatch } = require('./dispatcher');
+const { UPDATE_COUNT } = require('./event');
 
-const createMenu = (mainWindow) => Menu.buildFromTemplate([
+const createMenu = (mainWindow, dispatch) => Menu.buildFromTemplate([
     {
         label: app.name,
         submenu: [
             {
-                click: () => mainWindow.webContents.send('update-counter', 1),
+                click: () => dispatch(UPDATE_COUNT(1)),
                 label: 'Increment'
             },
             {
-                click: () => mainWindow.webContents.send('update-counter', -1),
+                click: () => dispatch(UPDATE_COUNT(-1)),
                 label: 'Decrement'
             }
         ]
@@ -26,7 +28,8 @@ const createWindow = () => {
             preload: path.join(__dirname, 'preload.js')
         }
     });
-    const menu = createMenu(win);
+    const dispatch = createDispatch(win);
+    const menu = createMenu(win, dispatch);
 
     Menu.setApplicationMenu(menu);
     ipcMain.on('set-title', (event, title) => {
