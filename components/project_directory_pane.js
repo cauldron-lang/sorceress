@@ -34,7 +34,7 @@ export default class ProjectDirectoryPane {
             <div class="project-directory-folder">
                 ${this.renderFolderIcon(folder)}
                 <span>${folder.name}</span>
-                <div class="project-directory-nodes">${folder.nodes.map((node) => this.renderNode(node))}</div>
+                <div class="project-directory-nodes">${folder.nodes.map((node) => this.renderNode(node)).join('')}</div>
             </div>
         `;
     }

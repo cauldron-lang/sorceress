@@ -19,7 +19,12 @@ export const state = (oldModel, model, dispatch, render) => {
         previousCount: oldModel.count,
         count: model.count,
         focus: model.focus,
-        buffer: model.buffer,
+        tabs: model.buffers.map((buffer) => ({
+            bufferId: buffer.id,
+            label: buffer.name,
+            active: buffer === model.activeBuffer,
+        })),
+        editorPaneContents: model.activeBuffer.contents,
         hasJustStarted: oldModel.isRunning === false && model.isRunning === true,
         projectDirectory: model.projectDirectory,
     };

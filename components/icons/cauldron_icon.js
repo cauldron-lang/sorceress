@@ -1,5 +1,5 @@
 export default class CauldronIcon {
-    render(_stateRepresentation) {
+    render() {
         return `
             <svg class="icon" height="24" width="24" xmlns="http://www.w3.org/2000/svg">
                 <!-- Bubbles -->
