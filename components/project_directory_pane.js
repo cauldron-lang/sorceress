@@ -44,6 +44,10 @@ export default class ProjectDirectoryPane {
     }
 
     render(stateRepresentation) {
+        if (!stateRepresentation.projectDirectory) {
+            return `NO PROJECT DIRECTORY`;
+        }
+
         return `
             <div class="pane pane-light">${this.renderNode(stateRepresentation.projectDirectory)}</div>
         `;

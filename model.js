@@ -20,7 +20,11 @@ const updateModel = (model, proposal) => {
     }
 
     if (proposal.boot) {
-        // TODO: once booting is complete then open the project
+        model.isRunning = true;
+    }
+
+    if (proposal.projectDirectory) {
+        model.projectDirectory = proposal.projectDirectory;
     }
 };
 
@@ -39,7 +43,9 @@ export const present = (model, state, proposal) => {
 };
 
 export const initialModel = () => ({
+    isRunning: false,
     count: 0,
     focus: null, // 'editor' | null
     buffer: '',
+    projectDirectory: null,
 });
