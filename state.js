@@ -1,8 +1,13 @@
-import { UPDATE_COUNT } from "./event.js";
+import {OPEN_PROJECT, UPDATE_COUNT} from "./event.js";
 
 const nextActionPredicate = (stateRepresentation, dispatch) => {
     if (stateRepresentation.count === 5) {
         dispatch(UPDATE_COUNT(stateRepresentation.count > stateRepresentation.previousCount ? 1 : -1));
+        return true;
+    }
+
+    if (stateRepresentation.hasJustStarted) {
+        dispatch(OPEN_PROJECT("/home/dennis/WebstormProjects/sorceress/examples/test_project")); // FIXME: path should come from persisted store
         return true;
     }
 
@@ -15,16 +20,8 @@ export const state = (oldModel, model, dispatch, render) => {
         count: model.count,
         focus: model.focus,
         buffer: model.buffer,
-        projectDirectory: {
-            name: 'test_project',
-            isFolder: true,
-            nodes: [
-                {
-                    name: 'main.cld',
-                    isFolder: false,
-                }
-            ]
-        },
+        hasJustStarted: oldModel.isRunning === false && model.isRunning === true,
+        projectDirectory: model.projectDirectory,
     };
 
     if (!nextActionPredicate(stateRepresentation, dispatch)) {
