@@ -1,3 +1,5 @@
+import createBuffer from "./util/create_buffer.js";
+
 const printableKeys = /^[a-zA-Z0-9_\s:=\[\]{}%+\-!"'<>~]$/;
 
 const updateModel = (model, proposal) => {
@@ -7,11 +9,11 @@ const updateModel = (model, proposal) => {
 
     if (proposal.keyPressed && model.focus === "editor") {
         if (proposal.keyPressed === "Backspace") {
-            model.buffer = model.buffer.slice(0, -1);
+            model.activeBuffer.contents = model.activeBuffer.contents.slice(0, -1);
         }
 
         if (printableKeys.test(proposal.keyPressed)) {
-            model.buffer += proposal.keyPressed;
+            model.activeBuffer.contents += proposal.keyPressed;
         }
     }
 
@@ -26,6 +28,10 @@ const updateModel = (model, proposal) => {
     if (proposal.projectDirectory) {
         model.projectDirectory = proposal.projectDirectory;
     }
+
+    if (proposal.focusedBufferId) {
+        model.activeBuffer = model.buffers.find((buffer) => buffer.id === proposal.focusedBufferId) ?? model.activeBuffer;
+    }
 };
 
 const persist = (_model) => {};
@@ -33,6 +39,8 @@ const persist = (_model) => {};
 const clone = (model) => {
     return { ...model };
 };
+
+const activeBuffer = createBuffer();
 
 export const present = (model, state, proposal) => {
     const oldModel = clone(model);
@@ -46,6 +54,7 @@ export const initialModel = () => ({
     isRunning: false,
     count: 0,
     focus: null, // 'editor' | null
-    buffer: '',
+    buffers: [activeBuffer, createBuffer()],
+    activeBuffer,
     projectDirectory: null,
 });

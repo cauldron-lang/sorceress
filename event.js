@@ -3,3 +3,4 @@ export const UPDATE_COUNT = (value) => ({ key: 'UPDATE_COUNT', value }); // FIXM
 export const EDITOR_FOCUS = () => ({ key: 'EDITOR_FOCUS' });
 export const KEY_PRESS = (name) => ({ key: 'KEY_PRESS', name });
 export const OPEN_PROJECT = (projectDirectory) => ({ key: 'OPEN_PROJECT', projectDirectory });
+export const FOCUS_BUFFER = (bufferId) => ({ key: 'FOCUS_BUFFER', bufferId });
