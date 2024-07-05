@@ -1,4 +1,4 @@
-const {UPDATE_COUNT} = require("./event");
+import { UPDATE_COUNT } from "./event.js";
 
 const nextActionPredicate = (stateRepresentation, dispatch) => {
     if (stateRepresentation.count === 5) {
@@ -9,17 +9,25 @@ const nextActionPredicate = (stateRepresentation, dispatch) => {
     return false;
 };
 
-const state = (oldModel, model, dispatch, render) => {
+export const state = (oldModel, model, dispatch, render) => {
     const stateRepresentation = {
         previousCount: oldModel.count,
         count: model.count,
+        focus: model.focus,
+        buffer: model.buffer,
+        projectDirectory: {
+            name: 'test_project',
+            isFolder: true,
+            nodes: [
+                {
+                    name: 'main.cld',
+                    isFolder: false,
+                }
+            ]
+        },
     };
 
     if (!nextActionPredicate(stateRepresentation, dispatch)) {
         render(stateRepresentation);
     }
-};
-
-module.exports = {
-    state,
 };

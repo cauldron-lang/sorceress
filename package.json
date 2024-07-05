@@ -13,6 +13,7 @@
   },
   "author": "Dennis Heckman",
   "license": "GPL-3.0-or-later",
+  "type": "module",
   "devDependencies": {
     "electron": "^31.0.1"
   }

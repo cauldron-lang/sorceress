@@ -1,37 +1,24 @@
-const { app, BrowserWindow, ipcMain, Menu } = require('electron');
-const path = require('node:path');
-const { createDispatch } = require('./dispatcher');
-const { UPDATE_COUNT } = require('./event');
+import { app, BrowserWindow, ipcMain, Menu } from 'electron';
+import path from 'node:path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import { createDispatch } from './dispatcher.js';
+import { BOOT } from './event.js';
 
-const createMenu = (mainWindow, dispatch) => Menu.buildFromTemplate([
-    {
-        label: app.name,
-        submenu: [
-            {
-                click: () => dispatch(UPDATE_COUNT(1)),
-                label: 'Increment'
-            },
-            {
-                click: () => dispatch(UPDATE_COUNT(-1)),
-                label: 'Decrement'
-            }
-        ]
-    }
-
-]);
+// get the directory of the current module file
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const createWindow = () => {
     const win = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 1024,
+        height: 768,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js')
         }
     });
     const dispatch = createDispatch(win);
-    const menu = createMenu(win, dispatch);
 
-    Menu.setApplicationMenu(menu);
+    Menu.setApplicationMenu(null);
     ipcMain.on('set-title', (event, title) => {
         const webContents = event.sender;
         const win = BrowserWindow.fromWebContents(webContents);
@@ -39,8 +26,16 @@ const createWindow = () => {
         win.setTitle(title);
     });
 
+    ipcMain.on('rendererReady', (_event) => {
+        dispatch(BOOT());
+    });
+
+    ipcMain.on('dispatch', (_event, dispatchableEvent) => {
+        dispatch(dispatchableEvent);
+    });
+
     win.loadFile('index.html');
-    win.webContents.openDevTools()
+    win.webContents.openDevTools();
 };
 
 app.on('window-all-closed', () => {

@@ -1,12 +1,24 @@
-const setButton = document.getElementById('btn');
-const titleInput = document.getElementById('title');
-const main = document.getElementById('counter')
+import Layout from "./components/layout.js";
+import { KEY_PRESS } from "./event.js";
 
-setButton.addEventListener('click', () => {
-    const title = titleInput.value;
-    window.sorceress.setTitle(title);
-});
+document.addEventListener('DOMContentLoaded', () => {
+    const main = document.getElementById('main')
+    let hasRendered = false;
+    const layout = new Layout(window.sorceress.dispatch);
 
-window.sorceress.onRender((stateRepresentation) => {
-    main.innerHTML = stateRepresentation.count;
+    window.sorceress.rendererReady();
+    window.sorceress.onRender((stateRepresentation) => {
+        if (hasRendered) {
+            layout.detachEventListeners();
+        } else {
+            window.addEventListener('keydown', (event) => {
+                window.sorceress.dispatch(KEY_PRESS(event.key))
+            });
+        }
+
+        main.innerHTML = layout.render(stateRepresentation);
+        hasRendered = true;
+
+        layout.attachEventListeners();
+    });
 });

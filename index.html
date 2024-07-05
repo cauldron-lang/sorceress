@@ -10,19 +10,14 @@
             http-equiv="X-Content-Security-Policy"
             content="default-src 'self'; script-src 'self'"
     />
+    <link rel="stylesheet" type="text/css" href="./styles.css">
     <title>Hello from Electron renderer!</title>
 </head>
     <body>
-        <h1>Hello from Electron renderer!</h1>
-        <p>👋</p>
-
-        Title: <input id="title"/>
-        <button id="btn" type="button">Set</button>
-
-        Current value: <strong id="counter">0</strong>
-
         <div id="main"></div>
-
-        <script src="./renderer.js"></script>
+        <script type="module" src="./components/editor_pane.js"></script>
+        <script type="module" src="./components/layout.js"></script>
+        <script type="module" src="./components/project_directory_pane.js"></script>
+        <script type="module" src="./renderer.js"></script>
     </body>
 </html>
