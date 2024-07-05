@@ -1,6 +1,26 @@
+const printableKeys = /^[a-zA-Z0-9_\s:=\[\]{}%+\-!"'<>~]$/;
+
 const updateModel = (model, proposal) => {
     if (proposal.addToCount) {
         model.count += proposal.addToCount;
+    }
+
+    if (proposal.keyPressed && model.focus === "editor") {
+        if (proposal.keyPressed === "Backspace") {
+            model.buffer = model.buffer.slice(0, -1);
+        }
+
+        if (printableKeys.test(proposal.keyPressed)) {
+            model.buffer += proposal.keyPressed;
+        }
+    }
+
+    if (proposal.focus) {
+        model.focus = proposal.focus;
+    }
+
+    if (proposal.boot) {
+        // TODO: once booting is complete then open the project
     }
 };
 
@@ -10,7 +30,7 @@ const clone = (model) => {
     return { ...model };
 };
 
-const present = (model, state, proposal) => {
+export const present = (model, state, proposal) => {
     const oldModel = clone(model);
 
     updateModel(model, proposal);
@@ -18,11 +38,8 @@ const present = (model, state, proposal) => {
     persist(model);
 };
 
-const initialModel = () => ({
+export const initialModel = () => ({
     count: 0,
+    focus: null, // 'editor' | null
+    buffer: '',
 });
-
-module.exports = {
-    present,
-    initialModel,
-};

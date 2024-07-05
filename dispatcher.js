@@ -1,9 +1,9 @@
-const { present, initialModel } = require("./model");
-const { act } = require("./action");
-const { state } = require("./state");
-const { render } = require("./view");
+import { present, initialModel } from "./model.js";
+import { act } from "./action.js";
+import { state } from "./state.js";
+import { render } from "./view.js";
 
-const createDispatch = (window) => {
+export const createDispatch = (window) => {
     const model = initialModel();
 
     const runDispatch = (event) => {
@@ -23,8 +23,4 @@ const createDispatch = (window) => {
     };
 
     return runDispatch;
-};
-
-module.exports = {
-    createDispatch
 };

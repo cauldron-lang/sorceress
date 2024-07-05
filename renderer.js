@@ -1,24 +1,24 @@
-const main = document.getElementById('main')
-
-const editorPane = (stateRepresentation) => {
-    return `<div class="pane pane-dark">Editor</div>`;
-};
-
-const layout = (stateRepresentation) => {
-    return `
-        <header></header>
-        <div class="container">
-            <div class="pane pane-light">Files</div>
-            ${editorPane(stateRepresentation)}
-            <div class="pane pane-light">Chat</div>
-        </div>
-        <div class="pane-bottom"></div>
-    `;
-};
+import Layout from "./components/layout.js";
+import { KEY_PRESS } from "./event.js";
 
 document.addEventListener('DOMContentLoaded', () => {
+    const main = document.getElementById('main')
+    let hasRendered = false;
+    const layout = new Layout(window.sorceress.dispatch);
+
     window.sorceress.rendererReady();
     window.sorceress.onRender((stateRepresentation) => {
-        main.innerHTML = layout(stateRepresentation);
+        if (hasRendered) {
+            layout.detachEventListeners();
+        } else {
+            window.addEventListener('keydown', (event) => {
+                window.sorceress.dispatch(KEY_PRESS(event.key))
+            });
+        }
+
+        main.innerHTML = layout.render(stateRepresentation);
+        hasRendered = true;
+
+        layout.attachEventListeners();
     });
 });

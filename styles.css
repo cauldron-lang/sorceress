@@ -1,4 +1,11 @@
+:root {
+    --color-text: #7997AE;
+    --color-cauldron-bubble: purple;
+    --color-cauldron-vessel: black;
+}
+
 body {
+    overflow: hidden;
     margin: 0;
 }
 
@@ -11,18 +18,17 @@ header {
 
 .container {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 4fr;
     min-height: 70vh;
 }
 
 .pane {
-    padding: 20px;
     border: 1px solid #1E1F22;
+    color: var(--color-text);
 }
 
 .pane-dark {
     background-color: #1E1F22;
-    color: #7997AE;
 }
 
 .pane-light {
@@ -36,3 +42,77 @@ header {
     min-height: 25vh;
 }
 
+/** Editor Cursor **/
+
+@keyframes blink {
+    0% {opacity: 1;}
+    50% {opacity: 0;}
+    100% {opacity: 1;}
+}
+
+.blink {
+    animation: blink 1s infinite;
+}
+
+/** Icon **/
+
+.icon {
+    margin: 0 -5px -5px 0;
+}
+
+.icon-folder {
+    fill: var(--color-text);
+}
+
+.icon-menu {
+    fill: var(--color-text);
+}
+
+.icon-cauldron-bubble {
+    fill: var(--color-cauldron-bubble);
+}
+
+.icon-cauldron-vessel {
+    fill: var(--color-cauldron-vessel)
+}
+
+/** Editor Tabs **/
+
+.tab-nav {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #1E1F22;
+    border-bottom: 1px solid #2B2D30;
+}
+
+.tab-item {
+    box-sizing: border-box;
+    display: block;
+    text-align: center;
+    transition: 0.3s;
+    padding: 0 16px 5px 16px;
+    cursor: default;
+}
+
+.tab-item:hover {
+    background-color: #ddd;
+}
+
+.tab-label-active {
+    font-weight: bold;
+}
+
+/** Project Directory **/
+
+.project-directory-nodes {
+    padding-left: 20px;
+}
+
+/** Fonts **/
+
+body {
+    font-family: 'JetBrains Mono', monospace;
+}
